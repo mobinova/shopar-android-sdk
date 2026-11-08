@@ -37,6 +37,8 @@ ShoparAgency.initialize(
 
 Add `ShoparAgency.SignInScreen` and `ShoparAgency.LinksScreen` where they fit your app. The screen performs email OTP with Shopar; callers receive only a safe profile projection, not access or refresh PWTs. If your host user signs out or changes accounts, call `ShoparAgency.onHostAccountChanged()` to end the local Shopar session and clear account-scoped views. The default link action opens Android's system share sheet; `LinksScreen` also accepts an app-specific share callback. Its **Bu uygulamadaki cihazlar ve oturumlar** screen lists/revokes only sessions from the current Agency app. Pass `onOpenAccountSecurity` to show a route into your Shopar account-security screen, where users can review and revoke sessions across Shopar and other apps; host-app navigation is intentionally caller-owned.
 
+Pass `style = AgencyStyle(...)` to `AgencyConfiguration` to customize the bundled sign-in and links screens. Color values are ARGB `Long`s and radii are `Float` dp values. `AgencyStyle.Midnight` is also available. The style is fixed when the Agency module initializes.
+
 ## Discovery setup
 
 Create the first placement before generating the full render snippet:
@@ -55,6 +57,8 @@ Discovery does not sign consumers into Shopar or attach Agency tokens. The backe
 `collectDeviceMetadata` sets the initial preference. Call `ShoparDiscovery.setOptionalDeviceMetadataCollectionEnabled(enabled)` whenever the host privacy preference changes; `false` removes optional model/OS context from future requests without rotating the `dev_` installation ID. There is no queued optional context to drain. Required app/placement/event attribution continues. The random installation ID is not a person identifier.
 
 Call `ShoparDiscovery.resetInstallationIdentity()` only after a user explicitly requests an identity reset. This replaces the app-private, no-backup `dev_` ID; prior server history remains separate. Uninstall/data clearing also removes the local ID and results in a new one.
+
+Pass `style = DiscoveryStyle(...)` to `DiscoveryConfiguration` to customize product cards and controls. The style exposes ARGB colors, card/control corner radii, and a `DiscoveryStyle.Midnight` palette. It applies to the SDK's bundled placement UI; the server still controls placement format, product selection, offer, and order. Configure the style before the first `ShoparDiscovery.initialize` call.
 
 ## Examples and privacy
 

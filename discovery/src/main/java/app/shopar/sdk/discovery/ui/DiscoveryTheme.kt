@@ -4,6 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -46,8 +47,9 @@ internal fun DiscoveryTheme(style: DiscoveryStyle, content: @Composable () -> Un
             large = RoundedCornerShape(style.cardCornerRadiusDp.dp),
             extraLarge = RoundedCornerShape(style.cardCornerRadiusDp.dp),
         ),
-        content = content,
-    )
+    ) {
+        Surface(color = colors.background, contentColor = colors.onBackground, content = content)
+    }
 }
 
 @Composable
