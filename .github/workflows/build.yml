@@ -19,4 +19,6 @@ jobs:
           java-version: "17"
       - uses: gradle/actions/setup-gradle@v4
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools platforms;android-37.0 build-tools;36.0.0
       - run: ./gradlew :contracts:assembleRelease :agency:assembleRelease :discovery:assembleRelease :sample:assembleDebug
