@@ -30,6 +30,7 @@ import app.shopar.sdk.agency.internal.ShoparAgent
 import app.shopar.sdk.agency.internal.grpcCall
 import app.shopar.sdk.agency.ui.AgencySignInScreen
 import app.shopar.sdk.agency.ui.AgencyLinksScreen
+import app.shopar.sdk.agency.ui.AgencyTheme
 import com.google.protobuf.Empty
 import kotlinx.coroutines.flow.StateFlow
 
@@ -148,13 +149,21 @@ object ShoparAgency {
     suspend fun onHostAccountChanged() = signOut()
 
     @androidx.compose.runtime.Composable
-    fun SignInScreen(onSignedIn: (AgencyCreatorSession) -> Unit) = AgencySignInScreen(onSignedIn)
+    fun SignInScreen(onSignedIn: (AgencyCreatorSession) -> Unit) {
+        AgencyTheme(configuration?.style ?: AgencyStyle()) {
+            AgencySignInScreen(onSignedIn)
+        }
+    }
 
     @androidx.compose.runtime.Composable
     fun LinksScreen(
         onShare: ((String) -> Unit)? = null,
         onOpenAccountSecurity: (() -> Unit)? = null,
-    ) = AgencyLinksScreen(onShare, onOpenAccountSecurity = onOpenAccountSecurity)
+    ) {
+        AgencyTheme(configuration?.style ?: AgencyStyle()) {
+            AgencyLinksScreen(onShare, onOpenAccountSecurity = onOpenAccountSecurity)
+        }
+    }
 
     private fun requireRuntime() = checkNotNull(runtime) { "Call ShoparAgency.initialize before using the SDK" }
 

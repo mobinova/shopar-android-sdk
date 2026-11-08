@@ -16,7 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -152,15 +153,17 @@ private fun DiscoveryProductCard(
         }
     }
 
-    Card(modifier=modifier.onGloballyPositioned{cardBounds=it.boundsInWindow()},shape=RoundedCornerShape(13.dp),colors=CardDefaults.cardColors(containerColor=MaterialTheme.colorScheme.surface)){
+    Card(modifier=modifier.onGloballyPositioned{cardBounds=it.boundsInWindow()},shape=MaterialTheme.shapes.large,
+        border=BorderStroke(1.dp,MaterialTheme.colorScheme.outlineVariant),
+        colors=CardDefaults.cardColors(containerColor=MaterialTheme.colorScheme.surface)){
         Column {
-            if(product.productImageUrl.isNotBlank())AsyncImage(model=product.productImageUrl,contentDescription=product.productTitle,modifier=Modifier.fillMaxWidth().height(190.dp))
+            if(product.productImageUrl.isNotBlank())AsyncImage(model=product.productImageUrl,contentDescription=product.productTitle,contentScale=ContentScale.Crop,modifier=Modifier.fillMaxWidth().height(190.dp))
             Column(Modifier.padding(14.dp),verticalArrangement=Arrangement.spacedBy(7.dp)){
                 Text(product.productTitle,style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.SemiBold)
                 Text("${product.merchantName}${product.sellerName.takeIf(String::isNotBlank)?.let{" · $it"}.orEmpty()}",style=MaterialTheme.typography.bodySmall)
                 Text(formatMoney(product.displayedPrice.minorUnits,product.displayedPrice.currency),style=MaterialTheme.typography.titleSmall,fontWeight=FontWeight.Bold)
                 Text(product.disclosureText,style=MaterialTheme.typography.labelSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
-                Button(enabled=openingProduct!=product.productId,modifier=Modifier.fillMaxWidth(),onClick={
+                Button(enabled=openingProduct!=product.productId,modifier=Modifier.fillMaxWidth(),shape=MaterialTheme.shapes.medium,colors=discoveryPrimaryButtonColors(),onClick={
                     onOpening(product.productId)
                     scope.launch {
                         val eventId=DiscoveryEventId.new();val requestId=DiscoveryEventId.new()

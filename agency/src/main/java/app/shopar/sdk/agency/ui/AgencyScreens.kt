@@ -65,14 +65,14 @@ fun AgencySignInScreen(onSignedIn: (AgencyCreatorSession) -> Unit, modifier: Mod
         if (error.isNotEmpty()) Text(error, color = MaterialTheme.colorScheme.error)
         if (result == null) {
             OutlinedTextField(email, { email = it }, modifier = Modifier.fillMaxWidth(), label = { Text("E-posta") }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
-            Button(enabled = !busy && email.contains('@'), modifier = Modifier.fillMaxWidth(), onClick = {
+            Button(enabled = !busy && email.contains('@'), modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium, colors = agencyPrimaryButtonColors(), onClick = {
                 busy = true; error = ""
                 scope.launch { runCatching { ShoparAgency.startSignIn(email) }.onSuccess { challenge -> requestId = challenge.requestId; expiresIn = challenge.expiresInSeconds }.onFailure { error = "Giriş kodu gönderilemedi. Biraz sonra tekrar dene." }; busy = false }
             }) { if (busy) CircularProgressIndicator() else Text("Doğrulama kodu gönder") }
             if (requestId.isNotEmpty()) {
                 Text("E-postana gönderilen 6 haneli kodu gir. Kod ${expiresIn / 60} dakika geçerli.", style = MaterialTheme.typography.bodySmall)
                 OutlinedTextField(code, { code = it.filter(Char::isDigit).take(6) }, modifier = Modifier.fillMaxWidth(), label = { Text("Doğrulama kodu") }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword))
-                Button(enabled = !busy && code.length == 6, modifier = Modifier.fillMaxWidth(), onClick = {
+                Button(enabled = !busy && code.length == 6, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium, colors = agencyPrimaryButtonColors(), onClick = {
                     busy = true; error = ""
                     scope.launch { runCatching { ShoparAgency.confirmSignIn(requestId, code) }.onSuccess { result = it }.onFailure { error = "Kod doğrulanamadı. Kontrol edip tekrar dene." }; busy = false }
                 }) { if (busy) CircularProgressIndicator() else Text("Giriş yap") }
@@ -91,7 +91,7 @@ fun AgencySignInScreen(onSignedIn: (AgencyCreatorSession) -> Unit, modifier: Mod
                 }
             }
             Text("Devam ederek Shopar hesabını bu uygulamada kullanırsın.", style = MaterialTheme.typography.bodySmall)
-            Button(modifier = Modifier.fillMaxWidth(), onClick = { result?.let(onSignedIn) }) { Text("Devam et") }
+            Button(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium, colors = agencyPrimaryButtonColors(), onClick = { result?.let(onSignedIn) }) { Text("Devam et") }
         }
     }
 }
@@ -193,7 +193,7 @@ fun AgencyLinksScreen(
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(query, { query = it }, modifier = Modifier.weight(1f), label = { Text("Shopar kataloğunda ara") }, singleLine = true)
-            Button(enabled = !busy && query.isNotBlank(), onClick = { busy=true;error="";scope.launch { runCatching { ShoparAgency.searchCatalog(query) }.onSuccess { catalog=it }.onFailure { error="Katalog şu anda yüklenemiyor. Tekrar dene." };busy=false } }) { Text("Ara") }
+            Button(enabled = !busy && query.isNotBlank(), shape = MaterialTheme.shapes.medium, colors = agencyPrimaryButtonColors(), onClick = { busy=true;error="";scope.launch { runCatching { ShoparAgency.searchCatalog(query) }.onSuccess { catalog=it }.onFailure { error="Katalog şu anda yüklenemiyor. Tekrar dene." };busy=false } }) { Text("Ara") }
         }
         catalog.forEach { item ->
             Card(modifier=Modifier.fillMaxWidth()) {

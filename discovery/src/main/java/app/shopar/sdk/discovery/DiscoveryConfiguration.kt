@@ -8,6 +8,7 @@ data class DiscoveryConfiguration(
     val useTls: Boolean = true,
     /** Android manufacturer/model/version are public device attributes; disabled by default. */
     val collectDeviceMetadata: Boolean = false,
+    val style: DiscoveryStyle = DiscoveryStyle(),
 ) {
     init {
         require(appId.matches(Regex("^app_[0-9A-HJKMNP-TV-Z]{26}$"))) {

@@ -6,6 +6,7 @@ data class AgencyConfiguration(
     val grpcHost: String = "grpc.shopar.app",
     val grpcPort: Int = 443,
     val useTls: Boolean = true,
+    val style: AgencyStyle = AgencyStyle(),
 ) {
     init {
         require(appId.matches(Regex("^app_[0-9A-HJKMNP-TV-Z]{26}$"))) {
