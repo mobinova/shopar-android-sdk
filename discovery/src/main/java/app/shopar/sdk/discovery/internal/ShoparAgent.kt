@@ -22,7 +22,9 @@ internal class ShoparAgent(context: Context, private val config: DiscoveryConfig
         val collect=collectDeviceMetadata.get()
         val manufacturer=if(collect)Build.MANUFACTURER else "unknown"
         val model=if(collect)Build.MODEL else "unknown"
-        val os=if(collect)"Android ${Build.VERSION.RELEASE}" else "unknown"
+        // The platform family is required so Shopar can route the SDK request.
+        // The optional preference controls version and device details, not Android vs iOS.
+        val os=if(collect)"Android ${Build.VERSION.RELEASE}" else "Android"
         val device=if(collect)Build.DEVICE else "unknown"
         return "Shopar/${BuildConfig.SHOPAR_SDK_BUILD}/${clean(BuildConfig.SHOPAR_SDK_VERSION)} " +
             "(${clean(manufacturer)}; ${clean(model)}; ${clean(os)}; ${clean(device)}; $installationId; " +
