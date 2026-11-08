@@ -39,6 +39,13 @@ Add `ShoparAgency.SignInScreen` and `ShoparAgency.LinksScreen` where they fit yo
 
 Pass `style = AgencyStyle(...)` to `AgencyConfiguration` to customize the bundled sign-in and links screens. Color values are ARGB `Long`s and radii are `Float` dp values. `AgencyStyle.Midnight` is also available. The style is fixed when the Agency module initializes.
 
+```kotlin
+ShoparAgency.initialize(context, AgencyConfiguration(
+    appId = "app_<dashboard-id>",
+    style = AgencyStyle(accentColor = 0xFFD8F36AL, cardCornerRadiusDp = 18f),
+))
+```
+
 ## Discovery setup
 
 Create the first placement before generating the full render snippet:
@@ -59,6 +66,13 @@ Discovery does not sign consumers into Shopar or attach Agency tokens. The backe
 Call `ShoparDiscovery.resetInstallationIdentity()` only after a user explicitly requests an identity reset. This replaces the app-private, no-backup `dev_` ID; prior server history remains separate. Uninstall/data clearing also removes the local ID and results in a new one.
 
 Pass `style = DiscoveryStyle(...)` to `DiscoveryConfiguration` to customize product cards and controls. The style exposes ARGB colors, card/control corner radii, and a `DiscoveryStyle.Midnight` palette. It applies to the SDK's bundled placement UI; the server still controls placement format, product selection, offer, and order. Configure the style before the first `ShoparDiscovery.initialize` call.
+
+```kotlin
+ShoparDiscovery.initialize(context, DiscoveryConfiguration(
+    appId = "app_<dashboard-id>",
+    style = DiscoveryStyle(accentColor = 0xFFD8F36AL, cardCornerRadiusDp = 18f),
+))
+```
 
 ## Examples and privacy
 
