@@ -1,6 +1,7 @@
 package app.shopar.sdk.agency.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
@@ -48,7 +49,7 @@ internal fun AgencyTheme(style: AgencyStyle, content: @Composable () -> Unit) {
             extraLarge = RoundedCornerShape(style.cardCornerRadiusDp.dp),
         ),
     ) {
-        Surface(color = colors.background, contentColor = colors.onBackground, content = content)
+        Surface(modifier = androidx.compose.ui.Modifier.fillMaxSize(), color = colors.background, contentColor = colors.onBackground, content = content)
     }
 }
 
