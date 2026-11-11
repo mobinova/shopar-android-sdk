@@ -3,7 +3,7 @@
 Two Android modules live in this public repository:
 
 - **Agency SDK**: Shopar OTP sign-in, creator profile/social account views, app-scoped links, performance, session management, and native share-sheet handoff.
-- **Discovery SDK**: anonymous product placements in full-page feed, horizontal rail, or single-card format.
+- **Discovery SDK**: anonymous Product and Deal placements in full-page feed, horizontal rail, or single-card format.
 
 Both modules share one allowlisted, public protobuf/gRPC contract library (`:contracts`). They do not depend on the private `shopar-proto` checkout. The `:sample` host app installs both modules together.
 
@@ -11,7 +11,7 @@ The Android public proto snapshot uses the JVM namespace `app.shopar.sdk.proto.*
 
 ## App registration
 
-Create a separate app property in Agency Dashboard or App Studio for each platform app. Keep the returned `app_id` with that integration. Discovery also needs at least one placement created in App Studio; its `placement_id` is part of the initialization/rendering call. Web properties are not supported yet.
+Create a separate app property in Agency Dashboard or App Studio for each platform app. Keep the returned `app_id` with that integration. Discovery also needs at least one placement created in App Studio; its `placement_id` is part of the initialization/rendering call for Product or Deal cards. Web properties are not supported yet.
 
 ## Installation
 
@@ -59,13 +59,13 @@ ShoparDiscovery.initialize(
 ShoparDiscovery.Placement(placementId = "plc_<app-studio-id>")
 ```
 
-Discovery does not sign consumers into Shopar or attach Agency tokens. The backend response selects the exact merchant offer and format. The SDK counts an impression only after the card is at least 50% visible for one continuous foreground second. It records the exact offer reference and opens Shopar's redirect URL; raw affiliate targets are not returned to the host.
+Discovery does not sign consumers into Shopar or attach Agency tokens. The backend response selects Product and Deal cards, the exact merchant destination, and placement format. Within the manual catalog rule, selected Products retain their order and precede selected Deals; the owner may place this rule before or after Interest rules. Shopar's Product recommendation fallback always runs last. Product cards open the exact ProductListing destination; Deal cards open the exact Deal destination. The SDK counts an impression only after a card is at least 50% visible for one continuous foreground second. It records the item-specific destination reference and opens Shopar's redirect URL; raw affiliate targets are not returned to the host. Hosts may optionally observe selected Deal IDs with `onDealSelected`; navigation remains SDK-owned.
 
 `collectDeviceMetadata` sets the initial preference. Call `ShoparDiscovery.setOptionalDeviceMetadataCollectionEnabled(enabled)` whenever the host privacy preference changes; `false` removes optional model/OS context from future requests without rotating the `dev_` installation ID. There is no queued optional context to drain. Required app/placement/event attribution continues. The random installation ID is not a person identifier.
 
 Call `ShoparDiscovery.resetInstallationIdentity()` only after a user explicitly requests an identity reset. This replaces the app-private, no-backup `dev_` ID; prior server history remains separate. Uninstall/data clearing also removes the local ID and results in a new one.
 
-Pass `style = DiscoveryStyle(...)` to `DiscoveryConfiguration` to customize product cards and controls. The style exposes ARGB colors, card/control corner radii, and a `DiscoveryStyle.Midnight` palette. It applies to the SDK's bundled placement UI; the server still controls placement format, product selection, offer, and order. Configure the style before the first `ShoparDiscovery.initialize` call.
+Pass `style = DiscoveryStyle(...)` to `DiscoveryConfiguration` to customize Product/Deal cards and controls. The style exposes ARGB colors, card/control corner radii, and a `DiscoveryStyle.Midnight` palette. It applies to the SDK's bundled placement UI; the server still controls placement format, selected Product/Deal/offer, and order. Configure the style before the first `ShoparDiscovery.initialize` call.
 
 ```kotlin
 ShoparDiscovery.initialize(context, DiscoveryConfiguration(

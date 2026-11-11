@@ -8,7 +8,7 @@ import app.shopar.sdk.discovery.internal.ShoparAgent
 import app.shopar.sdk.discovery.ui.DiscoveryPlacementView
 import app.shopar.sdk.discovery.ui.DiscoveryTheme
 
-/** Entry point for unauthenticated Shopar product placements. Discovery never reads an Agency PWT. */
+/** Entry point for unauthenticated Shopar Product/Deal placements. Discovery never reads an Agency PWT. */
 object ShoparDiscovery {
     @Volatile private var configuration: DiscoveryConfiguration? = null
     @Volatile private var applicationContext: Context? = null
@@ -38,11 +38,11 @@ object ShoparDiscovery {
     }
 
     @Composable
-    fun Placement(placementId:String,modifier:Modifier=Modifier,onProductSelected:(String)->Unit={}) {
+    fun Placement(placementId:String,modifier:Modifier=Modifier,onProductSelected:(String)->Unit={},onDealSelected:(String)->Unit={}) {
         val config=checkNotNull(configuration){"Call ShoparDiscovery.initialize before rendering a placement"}
         val service=checkNotNull(transport){"Call ShoparDiscovery.initialize before rendering a placement"}.stub
         DiscoveryTheme(config.style) {
-            DiscoveryPlacementView(config.appId,placementId,service,modifier,onProductSelected)
+            DiscoveryPlacementView(config.appId,placementId,service,modifier,onProductSelected,onDealSelected)
         }
     }
 }
